@@ -80,7 +80,6 @@
           ga('create', 'UA-80064018-1', 'auto');
           ga('send', 'pageview');
         };
-        enableGA();
 
         window.addEventListener("load", function() {
             window.cookieconsent.initialise({
@@ -94,6 +93,48 @@
                     }
                 },
                 "theme": "classic",
+                "type": "opt-in",
+
+                onInitialise: function (status) {
+                  debugger;
+                  var type = this.options.type;
+                  var didConsent = this.hasConsented();
+                  if (type == 'opt-in' && didConsent) {
+                    // enable cookies
+                    enableGA();
+                  }
+                  if (type == 'opt-out' && !didConsent) {
+                    // disable cookies
+                    // NOTHING TO DO
+                  }
+                },
+
+                onStatusChange: function(status, chosenBefore) {
+                  debugger;
+                  var type = this.options.type;
+                  var didConsent = this.hasConsented();
+                  if (type == 'opt-in' && didConsent) {
+                    // enable cookies
+                    enableGA();
+                  }
+                  if (type == 'opt-out' && !didConsent) {
+                    // disable cookies
+                    // NOTHING TO DO
+                  }
+                },
+
+                onRevokeChoice: function() {
+                  debugger;
+                  var type = this.options.type;
+                  if (type == 'opt-in') {
+                    // disable cookies
+                    // NOTHING TO DO
+                  }
+                  if (type == 'opt-out') {
+                    // enable cookies
+                    enableGA();
+                  }
+                }
             })
         });
     </script>
